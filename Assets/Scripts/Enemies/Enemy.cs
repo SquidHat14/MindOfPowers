@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using Random=UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
@@ -28,8 +27,10 @@ public class Enemy : MonoBehaviour
     private int hp;
 
     // Components
-    public Rigidbody2D rb {get; private set;}
     public StateMachine stateMachine {get; private set;}
+    public Rigidbody2D rb {get; private set;}
+    public SpriteRenderer rend {get; private set;}
+    public Collider2D coll {get; private set;}
 
     // Events
     public delegate void Damaged(int dmg);
@@ -41,8 +42,10 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
         stateMachine = GetComponent<StateMachine>();
+        rb = GetComponent<Rigidbody2D>();
+        rend = GetComponent<SpriteRenderer>();
+        coll = GetComponent<Collider2D>();
     }
 
     /// <summary>
@@ -76,9 +79,9 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public bool InRange()
     {
-        // TODO:
-        // Do this c:
-        return false;
+        Vector3 dist = Player.instance.transform.position - transform.position;
+        float dist2 = dist.sqrMagnitude;
+        return dist2 < (aggroRange * aggroRange);
     }
 
     /// <summary>

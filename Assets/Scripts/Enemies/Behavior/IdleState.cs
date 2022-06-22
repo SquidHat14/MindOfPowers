@@ -31,13 +31,13 @@ public class IdleState : BaseState
     /// </summary>
     private bool IsAlerted()
     {
-        // TODO:
-        // Update to check in desired directions.
-        // Set a mask to the appropriate layer mask.
+        LayerMask mask = LayerMask.GetMask("Player");
+        Vector3 direction = Player.instance.transform.position - me.transform.position;
         RaycastHit2D hit = Physics2D.Raycast(
             me.transform.position,
-            Vector2.left,
-            me.aggroRange);
+            direction,
+            me.aggroRange,
+            mask);
         
         return hit.collider != null;
     }
